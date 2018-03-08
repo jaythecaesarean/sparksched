@@ -41,7 +41,9 @@ INSTALLED_APPS = [
     'schedule',
     'djangobower',
     'invitations',
+    'nested_admin',
     'student',
+
 ]
 
 MIDDLEWARE = [

@@ -13,20 +13,22 @@ class EntryLanguageInfo(models.Model):
     entry_language = models.CharField(
                 max_length=2,
                 choices=LANGUAGE,
-                default=THAI,
+                default=ENGLISH,
             )
 
     class Meta:
         abstract = True
 
 class NameInfo(EntryLanguageInfo):
-    name_reference_number = models.CharField(max_length=10, blank=True, null=True)
-    first_name = models.CharField(max_length=50)
-    middle_name = models.CharField(max_length=50)
-    last_name = models.CharField(max_length=50)
+    personal_info = models.ForeignKey('PersonalInfo', on_delete= models.CASCADE, null=False)
+    first_name = models.CharField(max_length=50, blank=True, null=True)
+    middle_name = models.CharField(max_length=50, blank=True, null=True)
+    last_name = models.CharField(max_length=50, blank=True, null=True)
+    nickname = models.CharField(max_length=50, blank=True, null=True)
 
 
 class AddressInfo(EntryLanguageInfo):
+    personal_info = models.ForeignKey('PersonalInfo', on_delete=models.CASCADE, null=False)
     address_reference_number = models.CharField(max_length=10, blank=True, null=True)
     plot_house_number = models.CharField(max_length=20, blank=True, null=True)
     building_mu = models.CharField(max_length=50, blank=True, null=True)
@@ -41,8 +43,8 @@ class NationalityInfo(EntryLanguageInfo):
     name = models.CharField(max_length=20, blank=True, null=True)
     country = models.CharField(max_length=50)
 
-
 class ExtraInfo(models.Model):
+    personal_info = models.ForeignKey('PersonalInfo', on_delete= models.CASCADE, null=False)
     MALE = 'M'
     FEMALE = 'F'
     OTHER = 'O'
@@ -68,54 +70,18 @@ class ExtraInfo(models.Model):
                 default=MALE,
             )
 
-
 class PersonalInfo(models.Model):
-    reference_number = models.CharField(max_length=50)
-    name_en = models.ForeignKey(
-                NameInfo, 
-                related_name='student_name_en',
-                on_delete=models.CASCADE,
-                blank=True, null=True
-            )
-    name_th = models.ForeignKey(
-                NameInfo, 
-                related_name='student_name_th',
-                on_delete=models.CASCADE,
-                blank=True, null=True
-            )
-    address_en = models.ForeignKey(
-                AddressInfo, 
-                related_name='address_en',
-                on_delete=models.CASCADE,
-                blank=True, null=True
-            )
-    address_th = models.ForeignKey(
-                AddressInfo, 
-                related_name='address_th',
-                on_delete=models.CASCADE,
-                blank=True, null=True
-            )
+    reference_number = models.CharField(max_length=50, blank=True, null=True)
 
-    extra_info = models.ForeignKey(
-                AddressInfo, 
-                on_delete=models.CASCADE,
-                blank=True, null=True
-            )
-    
-
-class Student(models.Model):
-    personal_info = models.ForeignKey(
-                PersonalInfo, 
-                on_delete=models.CASCADE,
-                blank=True, null=True
-            )
+    class Meta:
+        verbose_name = "Student Information"
+        verbose_name_plural = "Students Information"
 
 class Parent(models.Model):
-    personal_info = models.ForeignKey(
-                PersonalInfo, 
-                on_delete=models.CASCADE,
-                blank=True, null=True
-            )
+    personal_info = models.ForeignKey('PersonalInfo', on_delete= models.CASCADE, null=False)
+
+class Student(models.Model):
+    personal_info = models.ForeignKey('PersonalInfo', on_delete= models.CASCADE, null=False)
 
 
 class StudentParent(models.Model):
@@ -143,7 +109,3 @@ class StudentParent(models.Model):
                 choices=RELATIONSHIP_TO_STUDENT,
                 default=MOTHER,
             )
-
-    
-
-

@@ -24,5 +24,5 @@ admin.site.site_header = 'Spark Scheduler Admin'
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('invitations/', include('invitations.urls', namespace='invitations')),
-
+    path('_nested_admin/', include('nested_admin.urls')),
 ] #+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

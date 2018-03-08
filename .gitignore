@@ -103,3 +103,9 @@ ENV/
 
 # visual-studio
 .vscode/*
+*.sqlite3
+*.sqlite3
+main/migrations/__init__.py
+student/migrations/__init__.py
+student/migrations/__init__.py
+
